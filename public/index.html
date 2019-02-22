@@ -6,10 +6,15 @@
   </head>
   <body>
     <h1>WebAssembly Demo</h1>
-    <script src="demo.js"></script>
+    <script src="imports.js"></script>
     <script>
-      // Wrap C _greet as a JS function
-      const greet = cwrap("greet", "string", ["string"]);
+      function getNum() {
+        return 22;
+      }
+
+      function getStr() {
+        return "Hello from JS";
+      }
     </script>
   </body>
 </html>
