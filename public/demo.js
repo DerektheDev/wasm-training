@@ -20,7 +20,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// {{PRE_JSES}}
+
 
 // Sometimes an existing Module object exists with properties
 // meant to overwrite the default module functionality. Here
@@ -1101,11 +1101,11 @@ function updateGlobalBufferViews() {
 
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 6752,
+    STACK_BASE = 6784,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 5249632,
-    DYNAMIC_BASE = 5249632,
-    DYNAMICTOP_PTR = 6496;
+    STACK_MAX = 5249664,
+    DYNAMIC_BASE = 5249664,
+    DYNAMICTOP_PTR = 6528;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1695,7 +1695,7 @@ var ASM_CONSTS = [];
 
 STATIC_BASE = GLOBAL_BASE;
 
-// STATICTOP = STATIC_BASE + 5728;
+// STATICTOP = STATIC_BASE + 5760;
 /* global initializers */ /*__ATINIT__.push();*/
 
 
@@ -1704,12 +1704,12 @@ STATIC_BASE = GLOBAL_BASE;
 
 
 
-var STATIC_BUMP = 5728;
+var STATIC_BUMP = 5760;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 
 /* no memory initializer */
-var tempDoublePtr = 6736
+var tempDoublePtr = 6768
 assert(tempDoublePtr % 8 == 0);
 
 function copyTempFloat(ptr) { // functions, because inlining this code increases code size too much
@@ -2348,4 +2348,6 @@ run();
 // {{MODULE_ADDITIONS}}
 
 
+
+console.log("demo.js ready - Run some tasks here");
 
