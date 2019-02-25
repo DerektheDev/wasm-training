@@ -1101,11 +1101,11 @@ function updateGlobalBufferViews() {
 
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 6768,
+    STACK_BASE = 7264,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 5249648,
-    DYNAMIC_BASE = 5249648,
-    DYNAMICTOP_PTR = 6512;
+    STACK_MAX = 5250144,
+    DYNAMIC_BASE = 5250144,
+    DYNAMICTOP_PTR = 7008;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1687,15 +1687,18 @@ Module['asm'] = function(global, env, providedBuffer) {
 
 // === Body ===
 
-var ASM_CONSTS = [];
+var ASM_CONSTS = [function($0, $1) { render($0, $1); }];
 
+function _emscripten_asm_const_iii(code, a0, a1) {
+  return ASM_CONSTS[code](a0, a1);
+}
 
 
 
 
 STATIC_BASE = GLOBAL_BASE;
 
-// STATICTOP = STATIC_BASE + 5744;
+// STATICTOP = STATIC_BASE + 6240;
 /* global initializers */ /*__ATINIT__.push();*/
 
 
@@ -1704,12 +1707,12 @@ STATIC_BASE = GLOBAL_BASE;
 
 
 
-var STATIC_BUMP = 5744;
+var STATIC_BUMP = 6240;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 
 /* no memory initializer */
-var tempDoublePtr = 6752
+var tempDoublePtr = 7248
 assert(tempDoublePtr % 8 == 0);
 
 function copyTempFloat(ptr) { // functions, because inlining this code increases code size too much
@@ -1828,16 +1831,14 @@ function copyTempDouble(ptr) {
 
   function ___unlock() {}
 
+  var _emscripten_asm_const_int=true;
+
   function _emscripten_get_heap_size() {
       return TOTAL_MEMORY;
     }
 
   function _emscripten_resize_heap(requestedSize) {
       abortOnCannotGrowMemory();
-    }
-
-  function _emscripten_run_script(ptr) {
-      eval(UTF8ToString(ptr));
     }
 
    
@@ -1855,6 +1856,14 @@ function copyTempDouble(ptr) {
       else err('failed to set errno from JS');
       return value;
     } 
+
+  function _time(ptr) {
+      var ret = (Date.now()/1000)|0;
+      if (ptr) {
+        HEAP32[((ptr)>>2)]=ret;
+      }
+      return ret;
+    }
 var ASSERTIONS = true;
 
 // Copyright 2017 The Emscripten Authors.  All rights reserved.
@@ -1898,7 +1907,7 @@ Module['wasmMaxTableSize'] = 10;
 
 var asmGlobalArg = {}
 
-Module.asmLibraryArg = { "abort": abort, "assert": assert, "setTempRet0": setTempRet0, "getTempRet0": getTempRet0, "abortOnCannotGrowMemory": abortOnCannotGrowMemory, "abortStackOverflow": abortStackOverflow, "nullFunc_ii": nullFunc_ii, "nullFunc_iiii": nullFunc_iiii, "___lock": ___lock, "___setErrNo": ___setErrNo, "___syscall140": ___syscall140, "___syscall146": ___syscall146, "___syscall54": ___syscall54, "___syscall6": ___syscall6, "___unlock": ___unlock, "_emscripten_get_heap_size": _emscripten_get_heap_size, "_emscripten_memcpy_big": _emscripten_memcpy_big, "_emscripten_resize_heap": _emscripten_resize_heap, "_emscripten_run_script": _emscripten_run_script, "flush_NO_FILESYSTEM": flush_NO_FILESYSTEM, "DYNAMICTOP_PTR": DYNAMICTOP_PTR, "tempDoublePtr": tempDoublePtr };
+Module.asmLibraryArg = { "abort": abort, "assert": assert, "setTempRet0": setTempRet0, "getTempRet0": getTempRet0, "abortOnCannotGrowMemory": abortOnCannotGrowMemory, "abortStackOverflow": abortStackOverflow, "nullFunc_ii": nullFunc_ii, "nullFunc_iiii": nullFunc_iiii, "___lock": ___lock, "___setErrNo": ___setErrNo, "___syscall140": ___syscall140, "___syscall146": ___syscall146, "___syscall54": ___syscall54, "___syscall6": ___syscall6, "___unlock": ___unlock, "_emscripten_asm_const_iii": _emscripten_asm_const_iii, "_emscripten_get_heap_size": _emscripten_get_heap_size, "_emscripten_memcpy_big": _emscripten_memcpy_big, "_emscripten_resize_heap": _emscripten_resize_heap, "_time": _time, "flush_NO_FILESYSTEM": flush_NO_FILESYSTEM, "DYNAMICTOP_PTR": DYNAMICTOP_PTR, "tempDoublePtr": tempDoublePtr };
 // EMSCRIPTEN_START_ASM
 var asm =Module["asm"]// EMSCRIPTEN_END_ASM
 (asmGlobalArg, Module.asmLibraryArg, buffer);
