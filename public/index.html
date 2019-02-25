@@ -3,17 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <title>WebAssembly Demo</title>
+    <style>
+      body,
+      canvas {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+    </style>
   </head>
   <body>
-    <script src="prime.js"></script>
+    <canvas id="canvas" height="2000" width="2000"></canvas>
+    <script src="canvas.js"></script>
     <script>
-      // numbers to check: 0 - primes
-      const primes = 100;
+      // create canvas context
+      const canvas = document.getElementById("canvas");
+      const context = canvas.getContext("2d");
 
-      // JS prime number checker
-      const isPrime = num => {
-        for (let i = 2; i < num; i++) if (num % 1 === 0) return false;
-        return num !== 1 && num !== 0;
+      // render circles on canvas
+      const render = () => {
+        // get circle data from C
+        let circles = _getCircles();
+        console.log(`Got ${circles} circles`);
+
+        // draw circle
+        context.beginPath();
+        context.arc(300, 300, 150, 0, 2 * Math.PI, false);
+        context.fillStyle = "dodgerblue";
+        context.fill();
+
+        console.log("rendered");
+
+        // request next animation frame and re-render with updated circles
+        // window.requestAnimationFrame(render);
       };
     </script>
   </body>
